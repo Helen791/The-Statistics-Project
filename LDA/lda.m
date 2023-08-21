@@ -105,6 +105,11 @@ allBetaValues = [allBetaValuesCondition1{1,1} allBetaValuesCondition2{1,1} allBe
 % Performing Henze Zirkler test
 HZmvntest(allBetaValues)
 
+%% Testing for covariance matrix structure using an M-box test
+Z = [ones(630,1) allBetaValuesCondition1{1,1} allBetaValuesCondition2{1,1} allBetaValuesCondition3{1,1}; ones(942,1)*2 allBetaValuesCondition1{1,2} allBetaValuesCondition2{1,2} allBetaValuesCondition3{1,2}];
+% Here, testing for just 2 ROIs, namely, BA1 and BA2 for the three imagery conditions for one subject (not many data points?). 
+MBoxtest(Z,0.05);
+
 %% The Decoding Toolbox (TDT) was used for performing LDA. 
 
 %% First, setting the defaults and defining the analysis 
@@ -164,8 +169,7 @@ cfg.verbose = 1; % How much output you want to see on the screen while the progr
 
 cfg.decoding.method = 'classification'; % This is our default anyway.
 
-cfg.decoding.train.classification.model_parameters.shrinkage = 'lw2'; % Sets the regularization method to 'lw2,' which likely refers to L2 (ridge) regularization. Regularization methods like L2 regularization add a penalty term to the loss function during training to prevent overfitting by discouraging overly complex models. In the context of linear classification or regression, L2 regularization adds a term that penalizes large coefficients, encouraging the model to use smaller weights for features. This helps improve the model's generalization performance on unseen data.
-
+cfg.decoding.train.classification.model_parameters.shrinkage = 'lw2'; % Sets the regularization parameter to lw2 which is a method for estimating the covariance matrix of data that shrinks the sample covariance matrix towards a diagonal matrix.
 cfg.results.output = {'accuracy_minus_chance'}; % Chance value is 50
 
 cfg.decoding.software = 'lda'; 
