@@ -1,8 +1,14 @@
+%% Probabilistic & Statistical Modelling (II) Final Project - PPI
+% Done by: Elena Murzina
+% Topic: Multi-model, Multivariate Analysis of Tactile Mental Imagery in Primary Somatosensory Cortex
 
 
-%% First-level analysis was performed using GUI SPM without coding. It included extraction of VOI using the region of interest (using the mask for S1 region), creation of PPI-variable and defining PPI GLM. 
+%% First-level analysis: was performed using GUI SPM without coding. 
+% It included extraction of VOI using the region of interest (using the mask for the BA2 part of right S1 region), 
+% creation of PPI-variable and defining PPI GLM for the first run of each of the 10 subjects
 
-%% Second-level analysis
+
+%% Second-level analysis: PPI-concatenation and one-sample t-test
 
 %% Concatenation of PPI
 
@@ -36,7 +42,6 @@ for sub_index = 1:length(subjects)
     
     % Save concatenated PPI data
 
- %directory = fullfile(dir);
 
     save(fullfile(dir, 'Concatenated_PPI.mat'), 'concat_PPI_ppi', 'concat_PPI_Y', 'concat_PPI_P');
 end
@@ -84,12 +89,44 @@ matlabbatch{3}.spm.stats.con.consess{1}.tcon.weights = 1;
 matlabbatch{3}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
 matlabbatch{3}.spm.stats.con.delete = 0;
 
-
-
-
 % Run the batch job
 spm_jobman('run', matlabbatch);
 
 
+
+% Plotting
+% Plotting was done for the individual subjects after the second-level analysis 
+% 4 PPI variables were created for the seed region S1 and the target region Left angular gyrus with GUI SPM
+
+% The code from SPM 12 manual (below) was used to create a plot:
+ba2_imag = load ("PPI_BA2_1x(Imagery).mat");
+ba2_perc = load ("PPI_BA2_1x(Perception).mat");
+lag_imag = load ("PPI_LAG_1x(Imagery).mat");
+lag_perc = load ('PPI_LAG_1x(Perception).mat');
+
+
+figure
+plot(ba2_imag.PPI.ppi,lag_imag.PPI.ppi,'k.');
+hold on
+plot(ba2_perc.PPI.ppi,lag_perc.PPI.ppi,'r.');
+
+x = ba2_imag.PPI.ppi(:);
+x = [x, ones(size(x))];
+y = lag_imag.PPI.ppi(:);
+B = x\y;
+y1 = B(1)*x(:,1)+B(2);
+plot(x(:,1),y1,'k-');
+
+
+x = ba2_perc.PPI.ppi(:);
+x = [x, ones(size(x))];
+y = lag_perc.PPI.ppi(:);
+B = x\y;
+y1 = B(1)*x(:,1)+B(2);
+plot(x(:,1),y1,'r-');
+legend('Imagery','Attention')
+xlabel('V2 activity')
+ylabel('V5 response')
+title('Psychophysiologic Interaction')
 
 
