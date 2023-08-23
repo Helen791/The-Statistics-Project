@@ -1,3 +1,8 @@
+%% Probabilistic & Statistical Modelling (II) Final Project - DCM
+% Done by: Ezgi Damla Hakbilir & Tiantian Li
+% Topic: Multi-model, Multivariate Analysis of Tactile Mental Imagery in Primary Somatosensory Cortex
+
+
 data_path='/Users/ttli/Dropbox/FreieU/shared_data';
 spmPath='/Users/ttli/Documents/spm12';
 
