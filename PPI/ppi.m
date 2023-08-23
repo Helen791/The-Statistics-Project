@@ -5,7 +5,8 @@
 
 %% First-level analysis: was performed using GUI SPM without coding. 
 % It included extraction of VOI using the region of interest (using the mask for the BA2 part of right S1 region), 
-% creation of PPI-variable and defining PPI GLM for the first run of each of the 10 subjects
+% creation of the PPI-variable (BA2_1X(Perc-Imag) and defining PPI GLM for the first run of each of the 10 subjects 
+% using the standard algorithm from the SPM 12 manual
 
 
 %% Second-level analysis: PPI-concatenation and one-sample t-test
